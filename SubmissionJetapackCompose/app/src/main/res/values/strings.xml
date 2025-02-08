@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Submission Jetapack Compose</string>
+    <string name="home">Home</string>
+    <string name="about">About</string>
+    <string name="aspyer">Aspyer</string>
+    <string name="blinders">Blinders</string>
+    <string name="brooks">Brooks</string>
+    <string name="dubvision">DubVision</string>
+    <string name="julianjordan">Julian Jordan</string>
+    <string name="martingarrix">Martin Garrix</string>
+    <string name="matisseandsadko">Matisse Sadko</string>
+    <string name="mesto">Mesto</string>
+    <string name="thirdparty">Third Party</string>
+    <string name="threelau">Three Lau</string>
+    <string name="tvnoise">TV Noise</string>
+</resources>
