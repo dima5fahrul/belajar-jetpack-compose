@@ -1,5 +1,6 @@
-package com.example.submissionjetapackcompose.ui.screen
+package com.example.submissionjetapackcompose.ui.screen.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -60,6 +61,9 @@ fun HomeContent(
             ArtistItem(
                 name = data.name,
                 photo = data.photo,
+                modifier = Modifier.clickable {
+                    navigateToDetail(data.id)
+                }
             )
         }
     }

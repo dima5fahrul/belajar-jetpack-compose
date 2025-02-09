@@ -1,4 +1,4 @@
-package com.example.submissionjetapackcompose.ui.screen
+package com.example.submissionjetapackcompose.ui.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

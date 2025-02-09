@@ -35,14 +35,13 @@ import com.dicoding.jetreward.ui.screen.profile.ProfileScreen
 import com.dicoding.jetreward.ui.theme.JetRewardTheme
 
 @Composable
-private fun BottomBar(
-    navController: NavHostController,
+private fun NavHostController.BottomBar(
     modifier: Modifier = Modifier,
 ) {
     NavigationBar(
         modifier = modifier,
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val navBackStackEntry by currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
         val navigationItems = listOf(
@@ -73,11 +72,11 @@ private fun BottomBar(
                 label = { Text(item.title) },
                 selected = currentRoute == item.screen.route,
                 onClick = {
-                    navController.navigate(
+                    navigate(
                         item.screen
                             .route
                     ) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                        popUpTo(graph.findStartDestination().id) {
                             saveState = true
                         }
                         restoreState = true
@@ -100,7 +99,7 @@ fun JetRewardApp(
     Scaffold(
         bottomBar = {
             if (currentRoute != Screen.DetailReward.route) {
-                BottomBar(navController)
+                navController.BottomBar()
             }
         },
         modifier = modifier

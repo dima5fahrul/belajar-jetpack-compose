@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class ArtistRepository {
-    private val artists = ArtistData.artists
+    private val artists = ArtistData.artistData
 
     fun getAllArtists(): Flow<List<Artist>> {
         return flowOf(artists)
@@ -19,7 +19,7 @@ class ArtistRepository {
     }
 
     fun searchArtists(query: String): List<Artist>{
-        return ArtistData.artists.filter {
+        return ArtistData.artistData.filter {
             it.name.contains(query, ignoreCase = true)
         }
     }

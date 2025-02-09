@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,23 +16,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.submissionjetapackcompose.navigation.NavigationItem
 import com.example.submissionjetapackcompose.navigation.Screen
-import com.example.submissionjetapackcompose.ui.screen.HomeScreen
+import com.example.submissionjetapackcompose.ui.screen.detail.DetailScreen
+import com.example.submissionjetapackcompose.ui.screen.home.HomeScreen
 
 @Composable
-private fun BottomBar(
-    navController: NavHostController,
+private fun NavHostController.BottomBar(
     modifier: Modifier = Modifier
 ) {
     NavigationBar(
         modifier = modifier
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val navBackStackEntry by currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
         val navigationItems = listOf(
@@ -60,11 +61,11 @@ private fun BottomBar(
                 label = { Text(item.title) },
                 selected = currentRoute == item.screen.route,
                 onClick = {
-                    navController.navigate(
+                    navigate(
                         item.screen
                             .route
                     ) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                        popUpTo(graph.findStartDestination().id) {
                             saveState = true
                         }
                         restoreState = true
@@ -86,7 +87,9 @@ fun JetArtistApp(
 
     Scaffold(
         bottomBar = {
-            BottomBar(navController)
+            if (currentRoute != Screen.DetailArtist.route) {
+                navController.BottomBar()
+            }
         },
         modifier = modifier
     ) { innerPadding ->
@@ -97,8 +100,22 @@ fun JetArtistApp(
         ) {
             composable(Screen.Home.route) {
                 HomeScreen(
-                    navigateToDetail = {
-
+                    navigateToDetail = { artistId ->
+                        navController.navigate(Screen.DetailArtist.createRoute((artistId)))
+                    }
+                )
+            }
+            composable(
+                route = Screen.DetailArtist.route,
+                arguments = listOf(navArgument("artistId") {
+                    type = NavType.LongType
+                }),
+            ) {
+                val id = it.arguments?.getLong("artistId") ?: -1L
+                DetailScreen(
+                    artistId = id,
+                    navigateBack = {
+                        navController.navigateUp()
                     }
                 )
             }
