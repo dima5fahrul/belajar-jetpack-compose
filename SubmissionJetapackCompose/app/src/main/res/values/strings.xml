@@ -68,4 +68,8 @@
     <string name="dimasfahrul_my_id">dimasfahrul.my.id</string>
     <string name="search_artist">Search artist</string>
     <string name="scroll_to_top">Scroll to top</string>
+    <string name="favorites">Favorites</string>
+    <string name="no_favorite_artist">No favorite artist</string>
+    <string name="remove_from_favorite">remove from favorite</string>
+    <string name="add_to_favorite">add to favorite</string>
 </resources>

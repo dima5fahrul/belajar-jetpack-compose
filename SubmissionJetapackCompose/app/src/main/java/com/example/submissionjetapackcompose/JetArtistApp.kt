@@ -3,6 +3,7 @@ package com.example.submissionjetapackcompose
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -26,6 +27,7 @@ import com.example.submissionjetapackcompose.navigation.NavigationItem
 import com.example.submissionjetapackcompose.navigation.Screen
 import com.example.submissionjetapackcompose.ui.screen.about.AboutScreen
 import com.example.submissionjetapackcompose.ui.screen.detail.DetailScreen
+import com.example.submissionjetapackcompose.ui.screen.favorite.FavoriteScreen
 import com.example.submissionjetapackcompose.ui.screen.home.HomeScreen
 
 @Composable
@@ -43,6 +45,11 @@ private fun NavHostController.BottomBar(
                 title = stringResource(R.string.home),
                 icon = Icons.Default.Home,
                 screen = Screen.Home
+            ),
+            NavigationItem(
+                title = stringResource(R.string.favorites),
+                icon = Icons.Default.Favorite,
+                screen = Screen.Favorite
             ),
             NavigationItem(
                 title = stringResource(R.string.about),
@@ -101,6 +108,13 @@ fun JetArtistApp(
         ) {
             composable(Screen.Home.route) {
                 HomeScreen(
+                    navigateToDetail = { artistId ->
+                        navController.navigate(Screen.DetailArtist.createRoute((artistId)))
+                    }
+                )
+            }
+            composable(Screen.Favorite.route) {
+                FavoriteScreen(
                     navigateToDetail = { artistId ->
                         navController.navigate(Screen.DetailArtist.createRoute((artistId)))
                     }

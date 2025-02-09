@@ -1,4 +1,4 @@
-package com.example.submissionjetapackcompose.ui.screen.home
+package com.example.submissionjetapackcompose.ui.screen.favorite
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -12,17 +12,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
-    private val repository: ArtistRepository
-): ViewModel() {
+class FavoriteViewModel(private val repository: ArtistRepository) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState<List<Artist>>> =
         MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState<List<Artist>>>
         get() = _uiState
 
-    fun getAllArtists(){
+    fun getFavoriteArtists() {
         viewModelScope.launch {
-            repository.getAllArtists()
+            repository.getFavoriteArtists()
                 .catch {
                     _uiState.value = UiState.Error(it.message.toString())
                 }
@@ -37,6 +35,6 @@ class HomeViewModel(
 
     fun search(newQuery: String) {
         _query.value = newQuery
-        _uiState.value = UiState.Success(repository.searchArtists(_query.value))
+        _uiState.value = UiState.Success(repository.searchFavoriteArtists(_query.value))
     }
 }

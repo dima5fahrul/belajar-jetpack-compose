@@ -24,6 +24,7 @@ class CalculatorAppKtTest {
         }
     }
 
+
     @Test
     fun calculate_area_of_rectangle_correct() {
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.enter_length)).performTextInput("3")

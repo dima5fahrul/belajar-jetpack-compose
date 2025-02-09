@@ -1,4 +1,4 @@
-package com.example.submissionjetapackcompose.ui.screen.home
+package com.example.submissionjetapackcompose.ui.screen.favorite
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -7,23 +7,30 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.submissionjetapackcompose.R
 import com.example.submissionjetapackcompose.ViewModelFactory
 import com.example.submissionjetapackcompose.common.UiState
 import com.example.submissionjetapackcompose.di.Injection
@@ -34,8 +41,8 @@ import com.example.submissionjetapackcompose.ui.components.ScrollToTopButton
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(
+fun FavoriteScreen(
+    viewModel: FavoriteViewModel = viewModel(
         factory = ViewModelFactory(Injection.provideRepository())
     ),
     navigateToDetail: (Long) -> Unit
@@ -57,22 +64,34 @@ fun HomeScreen(
         viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
             when (uiState) {
                 is UiState.Loading -> {
-                    viewModel.getAllArtists()
+                    viewModel.getFavoriteArtists()
                 }
 
                 is UiState.Success -> {
-                    HomeContent(
-                        artist = uiState.data,
-                        modifier = Modifier.padding(innerPadding),
-                        navigateToDetail = navigateToDetail,
-                        showButton = showButton,
-                        gridState = gridState,
-                        onClickTop = {
-                            scope.launch {
-                                gridState.animateScrollToItem(0)
-                            }
+                    if (uiState.data.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.no_favorite_artist),
+                                style = MaterialTheme.typography.headlineMedium
+                            )
                         }
-                    )
+                    } else {
+                        FavoriteContent(
+                            artist = uiState.data,
+                            innerPadding = innerPadding,
+                            navigateToDetail = navigateToDetail,
+                            showButton = showButton,
+                            gridState = gridState,
+                            onClickTop = {
+                                scope.launch {
+                                    gridState.animateScrollToItem(0)
+                                }
+                            }
+                        )
+                    }
                 }
 
                 is UiState.Error -> {}
@@ -82,9 +101,9 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeContent(
+fun FavoriteContent(
     artist: List<Artist>,
-    modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
     navigateToDetail: (Long) -> Unit,
     showButton: Boolean = false,
     gridState: LazyGridState,
@@ -96,7 +115,7 @@ fun HomeContent(
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
+        modifier = Modifier.padding(innerPadding)
     ) {
         items(artist) { data ->
             ArtistItem(
@@ -108,17 +127,17 @@ fun HomeContent(
             )
         }
     }
-        AnimatedVisibility(
-            visible = showButton,
-            enter = fadeIn() + slideInVertically(),
-            exit = fadeOut() + slideOutVertically(),
-            modifier = Modifier
-                .padding(bottom = 30.dp)
-        ) {
-            ScrollToTopButton(
-                onClick = {
-                    onClickTop()
-                }
-            )
-        }
+    AnimatedVisibility(
+        visible = showButton,
+        enter = fadeIn() + slideInVertically(),
+        exit = fadeOut() + slideOutVertically(),
+        modifier = Modifier
+            .padding(bottom = 30.dp)
+    ) {
+        ScrollToTopButton(
+            onClick = {
+                onClickTop()
+            }
+        )
+    }
 }

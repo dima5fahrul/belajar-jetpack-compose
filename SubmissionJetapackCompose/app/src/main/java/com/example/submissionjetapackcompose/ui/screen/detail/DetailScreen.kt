@@ -2,39 +2,46 @@ package com.example.submissionjetapackcompose.ui.screen.detail
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.submissionjetapackcompose.R
 import com.example.submissionjetapackcompose.ViewModelFactory
 import com.example.submissionjetapackcompose.common.UiState
 import com.example.submissionjetapackcompose.di.Injection
-import com.example.submissionjetapackcompose.ui.theme.SubmissionJetapackComposeTheme
+import com.example.submissionjetapackcompose.model.Artist
 
 @Composable
 fun DetailScreen(
@@ -44,36 +51,42 @@ fun DetailScreen(
     ),
     navigateBack: () -> Unit,
 ) {
-    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
-        when (uiState) {
-            is UiState.Loading -> {
-                viewModel.getArtistById(artistId)
-            }
+    val uiState by viewModel.uiState.collectAsState()
 
-            is UiState.Success -> {
-                val data = uiState.data
-                DetailContent(
-                    title = data.name,
-                    photo = data.photo,
-                    description = data.description,
-                    place = data.place,
-                    onBackClick = navigateBack,
-                )
-            }
-
-            is UiState.Error -> {}
+    when (uiState) {
+        is UiState.Loading -> {
+            viewModel.getArtistById(artistId)
         }
+
+        is UiState.Success -> {
+            val data = (uiState as UiState.Success<Artist>).data
+            DetailContent(
+                id = data.id,
+                title = data.name,
+                photo = data.photo,
+                description = data.description,
+                place = data.place,
+                viewModel = viewModel,
+                onBackClick = navigateBack,
+                isFavorite = data.isFavorite,
+            )
+        }
+
+        is UiState.Error -> {}
     }
 }
 
 @Composable
 fun DetailContent(
     @DrawableRes photo: Int,
+    id: Long,
     title: String,
     description: String,
     place: String,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: DetailViewModel,
+    isFavorite: Boolean,
 ) {
     Column(modifier = modifier) {
         Column(
@@ -91,15 +104,41 @@ fun DetailContent(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
                 )
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back),
+                IconButton(
+                    onClick = onBackClick,
                     modifier = Modifier
-                        .padding(16.dp)
-                        .clickable {
-                            onBackClick()
-                        }
-                )
+                        .padding(start = 16.dp, top = 8.dp)
+                        .align(Alignment.TopStart)
+                        .clip(CircleShape)
+                        .size(40.dp)
+                        .testTag("back_home")
+                        .background(Color.White)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                        contentDescription = stringResource(R.string.back),
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        viewModel.updateFavorite(id, isFavorite)
+                    },
+                    modifier = Modifier
+                        .padding(end = 16.dp, top = 8.dp)
+                        .align(Alignment.TopEnd)
+                        .clip(CircleShape)
+                        .size(40.dp)
+                        .background(Color.White)
+                        .testTag("favorite_detail_button")
+                ) {
+                    Icon(
+                        imageVector = if (!isFavorite) Icons.Default.FavoriteBorder else Icons.Default.Favorite,
+                        contentDescription = if (!isFavorite) stringResource(R.string.add_to_favorite) else stringResource(
+                            R.string.remove_from_favorite
+                        ),
+                        tint = if (!isFavorite) Color.Black else Color.Red
+                    )
+                }
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -138,20 +177,5 @@ fun DetailContent(
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewDetailScreen() {
-    SubmissionJetapackComposeTheme {
-        DetailContent(
-            photo = R.drawable.martingarrix,
-            title = stringResource(R.string.martingarrix),
-            place = stringResource(R.string.martingarrix_place),
-            description = stringResource(R.string.martingarrix_desc),
-            onBackClick = {},
-
-            )
     }
 }

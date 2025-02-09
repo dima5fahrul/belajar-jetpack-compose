@@ -6,4 +6,5 @@ data class Artist(
     val description: String,
     val place: String,
     val photo: Int,
+    var isFavorite: Boolean,
 )
