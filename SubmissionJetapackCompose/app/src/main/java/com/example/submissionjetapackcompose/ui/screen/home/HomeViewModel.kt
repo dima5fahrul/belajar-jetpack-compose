@@ -1,5 +1,7 @@
 package com.example.submissionjetapackcompose.ui.screen.home
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.submissionjetapackcompose.common.UiState
@@ -28,5 +30,12 @@ class HomeViewModel(
                 }
         }
     }
-    fun searchArtists(query: String) = repository.searchArtists(query)
+
+    private val _query = mutableStateOf("")
+    val query: State<String> get() = _query
+
+    fun search(newQuery: String) {
+        _query.value = newQuery
+        _uiState.value = UiState.Success(repository.searchArtists(_query.value))
+    }
 }
