@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.submissionjetapackcompose.navigation.NavigationItem
 import com.example.submissionjetapackcompose.navigation.Screen
+import com.example.submissionjetapackcompose.ui.screen.about.AboutScreen
 import com.example.submissionjetapackcompose.ui.screen.detail.DetailScreen
 import com.example.submissionjetapackcompose.ui.screen.home.HomeScreen
 
@@ -104,6 +105,9 @@ fun JetArtistApp(
                         navController.navigate(Screen.DetailArtist.createRoute((artistId)))
                     }
                 )
+            }
+            composable(Screen.About.route) {
+                AboutScreen()
             }
             composable(
                 route = Screen.DetailArtist.route,
