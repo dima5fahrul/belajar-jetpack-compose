@@ -68,7 +68,7 @@ fun DetailScreen(
                 onBackClick = navigateBack,
                 isFavorite = data.isFavorite,
                 onClick = {
-                    viewModel.updateFavorite(data.id, !data.isFavorite)
+                    viewModel.updateFavorite(data.id, data.isFavorite)
                 },
             )
         }
@@ -86,10 +86,11 @@ fun DetailContent(
     onBackClick: () -> Unit,
     isFavorite: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .verticalScroll(rememberScrollState())
                 .weight(1f)
                 .testTag("scrollToBottom")
@@ -99,14 +100,14 @@ fun DetailContent(
                     painter = painterResource(photo),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
+                    modifier = modifier
                         .height(400.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
                 )
                 IconButton(
                     onClick = onBackClick,
-                    modifier = Modifier
+                    modifier = modifier
                         .padding(start = 16.dp, top = 8.dp)
                         .align(Alignment.TopStart)
                         .clip(CircleShape)
@@ -121,7 +122,7 @@ fun DetailContent(
                 }
                 IconButton(
                     onClick = onClick,
-                    modifier = Modifier
+                    modifier = modifier
                         .padding(end = 16.dp, top = 8.dp)
                         .align(Alignment.TopEnd)
                         .clip(CircleShape)
@@ -140,7 +141,7 @@ fun DetailContent(
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(16.dp)
+                modifier = modifier.padding(16.dp)
             ) {
                 Text(
                     text = title,
@@ -155,7 +156,7 @@ fun DetailContent(
                     style = MaterialTheme.typography.bodyLarge,
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = modifier.height(8.dp))
                 Column(
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -166,7 +167,7 @@ fun DetailContent(
                             fontWeight = FontWeight.Bold
                         ),
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = modifier.height(4.dp))
                     Text(
                         text = description,
                         textAlign = TextAlign.Justify,
