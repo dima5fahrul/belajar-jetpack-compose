@@ -71,7 +71,9 @@ fun FavoriteScreen(
                 is UiState.Success -> {
                     if (uiState.data.isEmpty()) {
                         Box(
-                            modifier = Modifier.fillMaxSize().testTag("empty_favorite"),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .testTag("empty_favorite"),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -116,9 +118,11 @@ fun FavoriteContent(
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(innerPadding).testTag("lazy_favorite_grid")
+        modifier = Modifier
+            .padding(innerPadding)
+            .testTag("lazy_favorite_grid")
     ) {
-        items(artist) { data ->
+        items(artist, key = { it.id }) { data ->
             ArtistItem(
                 name = data.name,
                 photo = data.photo,

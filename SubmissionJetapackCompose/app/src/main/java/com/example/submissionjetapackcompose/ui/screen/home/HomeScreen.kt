@@ -120,7 +120,7 @@ fun HomeContent(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier.testTag("lazy_grid")
     ) {
-        items(artist) { data ->
+        items(artist, key = { it.id }) { data ->
             ArtistItem(
                 name = data.name,
                 photo = data.photo,
