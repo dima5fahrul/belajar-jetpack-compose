@@ -72,4 +72,5 @@
     <string name="no_favorite_artist">No favorite artist</string>
     <string name="remove_from_favorite">remove from favorite</string>
     <string name="add_to_favorite">add to favorite</string>
+    <string name="no_artist_found">No artist found</string>
 </resources>

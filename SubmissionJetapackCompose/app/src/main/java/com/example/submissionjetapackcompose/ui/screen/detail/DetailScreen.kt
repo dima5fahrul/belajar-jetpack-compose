@@ -61,14 +61,15 @@ fun DetailScreen(
         is UiState.Success -> {
             val data = (uiState as UiState.Success<Artist>).data
             DetailContent(
-                id = data.id,
-                title = data.name,
                 photo = data.photo,
+                title = data.name,
                 description = data.description,
                 place = data.place,
-                viewModel = viewModel,
                 onBackClick = navigateBack,
                 isFavorite = data.isFavorite,
+                onClick = {
+                    viewModel.updateFavorite(data.id, !data.isFavorite)
+                },
             )
         }
 
@@ -79,20 +80,19 @@ fun DetailScreen(
 @Composable
 fun DetailContent(
     @DrawableRes photo: Int,
-    id: Long,
     title: String,
     description: String,
     place: String,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: DetailViewModel,
     isFavorite: Boolean,
+    onClick: () -> Unit,
 ) {
-    Column(modifier = modifier) {
+    Column {
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .weight(1f)
+                .testTag("scrollToBottom")
         ) {
             Box {
                 Image(
@@ -120,9 +120,7 @@ fun DetailContent(
                     )
                 }
                 IconButton(
-                    onClick = {
-                        viewModel.updateFavorite(id, isFavorite)
-                    },
+                    onClick = onClick,
                     modifier = Modifier
                         .padding(end = 16.dp, top = 8.dp)
                         .align(Alignment.TopEnd)

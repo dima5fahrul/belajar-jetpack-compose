@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -70,7 +71,7 @@ fun FavoriteScreen(
                 is UiState.Success -> {
                     if (uiState.data.isEmpty()) {
                         Box(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize().testTag("empty_favorite"),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -115,7 +116,7 @@ fun FavoriteContent(
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(innerPadding)
+        modifier = Modifier.padding(innerPadding).testTag("lazy_favorite_grid")
     ) {
         items(artist) { data ->
             ArtistItem(

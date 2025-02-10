@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.submissionjetapackcompose.R
@@ -37,6 +38,7 @@ fun SearchBar(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 48.dp)
+            .testTag("search_bar")
     )
 
 }

@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-01-31T08:28:41.436400Z">
+        <DropdownSelection timestamp="2025-02-09T09:31:16.315128Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/Users/dimasfahrul/.android/avd/Pixel_7_API_30.avd" />
@@ -13,16 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="DetailScreenKtTest">
+      <SelectionState runConfigName="JetArtistAppKtTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="increaseProduct_buttonCounter()">
+      <SelectionState runConfigName="navHost_bottomNavigation_working()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="JetRewardAppKtTest">
+      <SelectionState runConfigName="navigateTo_AboutPage()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="navHost_clickItem_navigatesToDetailWithData()">
+      <SelectionState runConfigName="searchShowListPlayer()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="favoriteClickAndDeleteFavoriteInDetailScreen_NotShowInFavoriteScreen()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
